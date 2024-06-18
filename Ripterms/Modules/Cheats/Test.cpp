@@ -1,12 +1,12 @@
-#include "Modules.h"
+#include "../Modules.h"
 #include <ImGui/imgui.h>
 #include <iostream>
 #include "../../net/minecraft/network/Packet/Packet.h"
 #include "../../net/minecraft/network/play/client/C03PacketPlayer/C03PacketPlayer.h"
 #include <thread>
 #include "../../net/minecraft/client/Minecraft/Minecraft.h"
-#include "../Hook/JavaHook.h"
-#include "../Cache/Cache.h"
+#include "../../Hook/JavaHook.h"
+#include "../../Cache/Cache.h"
 #include <gl/GL.h>
 
 

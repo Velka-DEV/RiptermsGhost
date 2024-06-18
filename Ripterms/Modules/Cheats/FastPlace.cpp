@@ -1,6 +1,6 @@
-#include "Modules.h"
+#include "../Modules.h"
 #include <imgui.h>
-#include "../Cache/Cache.h"
+#include "../../Cache/Cache.h"
 
 void Ripterms::Modules::FastPlace::run()
 {

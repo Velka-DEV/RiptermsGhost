@@ -1,7 +1,7 @@
-#include "Modules.h"
-#include "../Cache/Cache.h"
+#include "../Modules.h"
+#include "../../Cache/Cache.h"
 #include <ImGui/imgui.h>
-#include "../Hook/JavaHook.h"
+#include "../../Hook/JavaHook.h"
 
 void Ripterms::Modules::Blink::run()
 {

@@ -1,5 +1,5 @@
-#include "Modules.h"
-#include "../Cache/Cache.h"
+#include "../Modules.h"
+#include "../../Cache/Cache.h"
 #include "../../net/minecraft/network/play/server/S19PacketEntityStatus/S19PacketEntityStatus.h"
 #include "../../net/minecraft/network/protocol/game/ClientboundDamageEventPacket/ClientboundDamageEventPacket.h"
 #include "../../net/minecraft/network/play/server/S14PacketEntity/S14PacketEntity.h"

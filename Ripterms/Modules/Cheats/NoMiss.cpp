@@ -1,5 +1,5 @@
-#include "Modules.h"
-#include "../Hook/JavaHook.h"
+#include "../Modules.h"
+#include "../../Hook/JavaHook.h"
 
 void Ripterms::Modules::NoMiss::onClickMouse(JNIEnv* env, Minecraft& theMinecraft, bool* cancel)
 {

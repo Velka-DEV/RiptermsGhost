@@ -1,6 +1,6 @@
-#include "Modules.h"
-#include "../GUI/GUI.h"
-#include "../Cache/Cache.h"
+#include "../Modules.h"
+#include "../../GUI/GUI.h"
+#include "../../Cache/Cache.h"
 #include <ImGui/imgui.h>
 
 

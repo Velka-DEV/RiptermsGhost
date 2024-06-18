@@ -1,4 +1,4 @@
-#include "Modules.h"
+#include "../Modules.h"
 
 void Ripterms::Modules::Glide::onUpdateWalkingPlayer(JNIEnv* env, EntityPlayerSP& this_player, bool* cancel)
 {

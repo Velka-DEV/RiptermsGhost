@@ -1,9 +1,9 @@
-#include "Modules.h"
+#include "../Modules.h"
 #include <imgui.h>
-#include "../Hook/JavaHook.h"
-#include "../Cache/Cache.h"
+#include "../../Hook/JavaHook.h"
+#include "../../Cache/Cache.h"
 #include "../../net/minecraft/client/renderer/ActiveRenderInfo/ActiveRenderInfo.h"
-#include "../GUI/GUI.h"
+#include "../../GUI/GUI.h"
 
 void Ripterms::Modules::Xray::renderGUI()
 {
