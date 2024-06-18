@@ -241,7 +241,18 @@ void Ripterms::Modules::runAll()
 	{
 		for (IModule* m : category.modules)
 		{
-			m->run();
+			if (m->enabled)
+			{
+				m->run();
+				m->wasEnabled = true;
+			} else
+			{
+				if (m->wasEnabled)
+				{
+					m->disable();
+					m->wasEnabled = false;
+				}
+			}
 		}
 	}
 }
@@ -252,12 +263,12 @@ void Ripterms::Modules::cleanAll()
 	{
 		for (IModule* m : category.modules)
 		{
-			m->disable();
+			m->clean();
 		}
 	}
 }
 
-
+#if ENABLE_CHEATS
 void Ripterms::Modules::ESP::render()
 {
 }
@@ -270,3 +281,4 @@ void Ripterms::Modules::BlockOnAttack::onAttackTargetEntityWithCurrentItem(JNIEn
 	PostMessageA(Ripterms::window, WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(cursorPos.x, cursorPos.y));
 	PostMessageA(Ripterms::window, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(cursorPos.x, cursorPos.y));
 }
+#endif

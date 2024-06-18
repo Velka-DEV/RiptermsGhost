@@ -198,6 +198,18 @@ R"(
 				"static": false
 			},
 			{
+				"name": "leftClickCounter",
+				"obfuscated": "ag",
+				"signature": "I",
+				"static": false
+			},
+			{
+				"name": "entityRenderer",
+				"obfuscated": "o",
+				"signature": "Lbfk;",
+				"static": false
+			},
+			{
 				"name": "renderViewEntity",
 				"obfuscated": "ad",
 				"signature": "Lpk;",
@@ -209,6 +221,12 @@ R"(
 				"name": "clickMouse",
 				"obfuscated": "aw",
 				"signature": "()V",
+				"static": false
+			},
+			{
+				"name": "sendClickBlockToController",
+				"obfuscated": "b",
+				"signature": "(Z)V",
 				"static": false
 			}
 		]
@@ -229,6 +247,12 @@ R"(
 				"obfuscated": "p",
 				"signature": "()V",
 				"static": false
+			},
+			{
+				"name": "sendPlayerAbilities",
+				"obfuscated": "t",
+				"signature": "()V",
+				"static": false
 			}
 		]
 	},
@@ -239,7 +263,14 @@ R"(
 	},
 	"net/minecraft/entity/player/EntityPlayer": {
 		"obfuscated": "wn",
-		"fields": [],
+		"fields": [
+			{
+				"name": "capabilities",
+				"obfuscated": "bA",
+				"signature": "Lwl;",
+				"static": false
+			}
+		],
 		"methods": [
 			{
 				"name": "attackTargetEntityWithCurrentItem",
@@ -248,6 +279,24 @@ R"(
 				"static": false
 			}
 		]
+	},
+	"net/minecraft/entity/player/PlayerCapabilities": {
+		"obfuscated": "wl",
+		"fields": [
+			{
+				"name": "isFlying",
+				"obfuscated": "b",
+				"signature": "Z",
+				"static": false
+			},
+			{
+				"name": "allowFlying",
+				"obfuscated": "c",
+				"signature": "Z",
+				"static": false
+			}
+		],
+		"methods": []
 	},
 	"net/minecraft/entity/EntityLivingBase": {
 		"obfuscated": "pr",
@@ -478,6 +527,48 @@ R"(
 				"obfuscated": "ae",
 				"signature": "Lavb;",
 				"static": false
+			},
+			{
+				"name": "keyBindAttack",
+				"obfuscated": "ai",
+				"signature": "Lavb;",
+				"static": false
+			},
+			{
+				"name": "keyBindForward",
+				"obfuscated": "Y",
+				"signature": "Lavb;",
+				"static": false
+			},
+			{
+				"name": "keyBindLeft",
+				"obfuscated": "Z",
+				"signature": "Lavb;",
+				"static": false
+			},
+			{
+				"name": "keyBindBack",
+				"obfuscated": "aa",
+				"signature": "Lavb;",
+				"static": false
+			},
+			{
+				"name": "keyBindRight",
+				"obfuscated": "ab",
+				"signature": "Lavb;",
+				"static": false
+			},
+			{
+				"name": "keyBindJump",
+				"obfuscated": "ac",
+				"signature": "Lavb;",
+				"static": false
+			},
+			{
+				"name": "pauseOnLostFocus",
+				"obfuscated": "z",
+				"signature": "Z",
+				"static": false
 			}
 		],
 		"methods": []
@@ -509,7 +600,14 @@ R"(
 				"static": false
 			}
 		],
-		"methods": []
+		"methods": [
+			{
+				"name": "toString",
+				"obfuscated": "toString",
+				"signature": "()Ljava/lang/String;",
+				"static": false
+			}
+		]
 	},
 	"net/minecraft/util/MovingObjectPosition$MovingObjectType": {
 		"obfuscated": "auh$a",
@@ -655,6 +753,12 @@ R"(
 				"name": "attackEntity",
 				"obfuscated": "a",
 				"signature": "(Lwn;Lpk;)V",
+				"static": false
+			},
+			{
+				"name": "onPlayerDamageBlock",
+				"obfuscated": "c",
+				"signature": "(Lcj;Lcq;)Z",
 				"static": false
 			}
 		]

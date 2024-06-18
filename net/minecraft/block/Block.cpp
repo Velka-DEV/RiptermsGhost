@@ -1,5 +1,7 @@
 #include "Block.h"
 
+
+
 String Block::toString()
 {
 	if (!instance) return String(env);
@@ -19,3 +21,19 @@ std::string Block::getName()
 	}
 	return toString().toStdString();
 }
+
+bool Block::isBlock(std::string id)
+{
+	if (!instance)
+		return false;
+
+	std::string name = getName();
+
+	if (name.empty())
+		return false;
+
+	std::string object_name = "Block{" + id + "}";
+
+	return name == object_name;
+}
+

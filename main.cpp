@@ -22,6 +22,12 @@ BOOL WINAPI DllMain(
         {
             std::cin.ignore();
             FreeConsole();
+
+            std::cout << "Init failed" << std::endl;
+
+            // Await user input
+            std::cin.ignore();
+            
             return FALSE;
         }
         std::cout << "Init success" << std::endl;

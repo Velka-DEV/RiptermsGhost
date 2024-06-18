@@ -5,6 +5,8 @@
 #include <iostream>
 #include "../Ripterms.h"
 
+#define SEARCH_RANGE 0x1000
+
 static void* find_correct_hook_place(void* _i2i_entry);
 static void common_detour(HotSpot::frame* frame, HotSpot::Thread* thread, bool* cancel);
 static constexpr int NO_COMPILE = HotSpot::JVM_ACC_NOT_C2_COMPILABLE | HotSpot::JVM_ACC_NOT_C1_COMPILABLE | HotSpot::JVM_ACC_NOT_C2_OSR_COMPILABLE | HotSpot::JVM_ACC_QUEUED;
@@ -44,8 +46,11 @@ bool Ripterms::JavaHook::hook(jmethodID methodID, i2i_detour_t detour)
             Ripterms::p_tienv->AddCapabilities(&capabilities);
             return 0;
     }();
-    if (!methodID || !detour) 
+    if (!methodID || !detour)
+    {
+        std::cerr << "Invalid methodID or detour\n";
         return false;
+    }
 
     HotSpot::Method* method = *(HotSpot::Method**)methodID;
     for (HookedMethod& hk : hooked_methods)
@@ -94,7 +99,10 @@ bool Ripterms::JavaHook::hook(jmethodID methodID, i2i_detour_t detour)
     std::cout << "placed i2i hook at: " << (void*)target << '\n';
     Midi2iHook* hook = new Midi2iHook(target, common_detour);
     if (!hook)
+    {
+        std::cerr << "Failed to create i2i hook\n";
         return false;
+    }
 
     hooked_i2i_entries.push_back({ i2i, hook });
     return true;

@@ -9,6 +9,14 @@ public:
 	double getGammaSetting();
 	KeyBinding getKeyBindSneak();
 	KeyBinding getKeyBindSprint();
+	KeyBinding getKeyBindAttack();
+	KeyBinding getKeyBindForward();
+	KeyBinding getKeyBindBack();
+	KeyBinding getKeyBindLeft();
+	KeyBinding getKeyBindRight();
+	KeyBinding getKeyBindJump();
+	bool getPauseOnLostFocus();
+	void setPauseOnLostFocus(bool value);
 
 	void setGammaSetting(double value);
 protected:

@@ -1,5 +1,7 @@
 #include "Minecraft.h"
 
+#include "../renderer/EntityRenderer.h"
+
 Minecraft Minecraft::getTheMinecraft(JNIEnv* env)
 {
 	return Minecraft(env->GetStaticObjectField(MinecraftClass.get_jclass(env), MinecraftClass.getFieldID("theMinecraft")), env);
@@ -21,6 +23,12 @@ WorldClient Minecraft::getTheWorld()
 {
 	if (!this->instance) return WorldClient(nullptr, env);
 	return WorldClient(env->GetObjectField(this->instance, MinecraftClass.getFieldID("theWorld")), env);
+}
+
+EntityRenderer Minecraft::getEntityRenderer()
+{
+	if (!instance) return EntityRenderer(nullptr, env);
+	return EntityRenderer(env->GetObjectField(instance, MinecraftClass.getFieldID("entityRenderer")), env);
 }
 
 GameSettings Minecraft::getGameSettings()
@@ -66,11 +74,25 @@ int Minecraft::getRightClickDelayTimer()
 	return env->GetIntField(instance, MinecraftClass.getFieldID("rightClickDelayTimer"));
 }
 
+void Minecraft::setLeftClickCounter(int value)
+{
+	if (!instance) return;
+	env->SetIntField(instance, MinecraftClass.getFieldID("leftClickCounter"), value);
+}
+
 void Minecraft::clickMouse()
 {
 	if (!instance)
 		return;
 	env->CallVoidMethod(instance, MinecraftClass.getMethodID("clickMouse"));
+	return;
+}
+
+void Minecraft::sendClickBlockToController(bool leftClick)
+{
+	if (!instance)
+		return;
+	env->CallVoidMethod(instance, MinecraftClass.getMethodID("sendClickBlockToController"), leftClick ? JNI_TRUE : JNI_FALSE);
 	return;
 }
 

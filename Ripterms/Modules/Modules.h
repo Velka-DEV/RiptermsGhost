@@ -18,6 +18,10 @@
 #include "../../net/minecraft/client/Minecraft/Minecraft.h"
 #include "../GUI/gyro_gui/gyro_gui.h"
 
+#include "Automation/Generic/Stage/AutomationStage.h"
+
+#define ENABLE_CHEATS 0
+
 namespace Ripterms
 {
 	namespace Modules
@@ -62,7 +66,7 @@ namespace Ripterms
 			const char* description;
 		};
 
-
+#if ENABLE_CHEATS
 		// Category Combat
 		class AimAssist : public IModule
 		{
@@ -246,7 +250,7 @@ namespace Ripterms
 				bool render = true;
 			};
 
-			static void updateRenderData(Xray* xray);
+			static void updateRenderData(GenericAutomation* xray);
 
 			int RADIUS = 20;
 			bool coal = false;
@@ -360,8 +364,68 @@ namespace Ripterms
 			float motionY_multiplier = 0.0f;
 			float motionZ_multiplier = 0.0f;
 		};
+#endif
 
+		//Category Other
+		class ClientBrandChanger : public IModule
+		{
+		public:
+			void renderGUI() override;
+			void onGetClientModName(JNIEnv* env, bool* cancel) override;
+		private:
+			char name[128] = { 0 };
+			String getClientModName();
+		};
 
+		class Test : public IModule
+		{
+		public:
+			void renderGUI() override;
+		};
+
+		class MushroomAutomation : public IModule
+		{
+		public:
+			void run() override;
+			void renderGUI() override;
+			void onUpdateWalkingPlayer(JNIEnv* env, EntityPlayerSP& this_player, bool* cancel) override;
+			void disable() override;
+		private:
+			float yaw = -106.0f;
+			float pitch = 5.5f;
+			int stage = 0;
+			Timer preventStuckTimer;
+			Maths::Vector3d startBlockPos;
+			void evaluateStage(Block& belowBlock);
+			void evaluateStageStrict( Block& belowBlock);
+			void runStage();
+			void clearOtherKeys(int currentStage);
+			void replaceOnStart();
+			void toggleFly();
+			void preventStuck();
+			Block getBlockBelowPlayer();
+		};
+
+		class GenericAutomation : public IModule
+		{
+		public:
+			void run() override;
+			void render() override;
+			void renderGUI() override;
+			void onUpdateWalkingPlayer(JNIEnv* env, EntityPlayerSP& this_player, bool* cancel) override;
+			void disable() override;
+
+			void createStage();
+		private:
+			float yaw = -106.0f;
+			float pitch = 5.5f;
+			int stage = 0;
+			int radius = 100;
+			std::vector<Automation::AutomationStage> stages{};
+			
+			void updateRenderData();
+		};
+		
 		class Category
 		{
 		public:
@@ -385,6 +449,7 @@ namespace Ripterms
 
 		inline Category categories[] =
 		{
+#if ENABLE_CHEATS
 			Category::create<AimAssist, Reach, LeftClicker, WTap, HitBoxes, BackTrack, NoMiss, BlockOnAttack>("Combat"),
 			Category::create<FastPlace, Blink, LegitScaffold, NoFall>("Player"),
 			Category::create<Velocity, VelocityPacket, Sprint, Glide, VelocityFly, Speed>("Movement"),

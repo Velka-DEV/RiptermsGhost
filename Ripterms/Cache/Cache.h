@@ -16,6 +16,7 @@ namespace Ripterms
 		WorldClient theWorld{ Ripterms::p_env, true };
 		List playerEntities{ Ripterms::p_env, true };
 		GameSettings gameSettings{ Ripterms::p_env, true };
+		EntityRenderer entityRenderer{ Ripterms::p_env, true };
 		Timer timer{ Ripterms::p_env, true };
 		NetHandlerPlayClient sendQueue{ Ripterms::p_env, true };
 

@@ -7,6 +7,7 @@
 #include "../../util/Timer/Timer.h"
 #include "../multiplayer/PlayerControllerMP/PlayerControllerMP.h"
 #include "../gui/GuiScreen/GuiScreen.h"
+#include "../renderer/EntityRenderer.h"
 
 class Minecraft : public Object {
 public:
@@ -16,6 +17,7 @@ public:
 	EntityPlayerSP getThePlayer();
 	PlayerControllerMP getPlayerController();
 	WorldClient getTheWorld();
+	EntityRenderer getEntityRenderer();
 	GameSettings getGameSettings();
 	MovingObjectPosition getObjectMouseOver();
 	Entity getPointedEntity();
@@ -23,7 +25,9 @@ public:
 	Timer getTimer();
 	GuiScreen getCurrentScreen();
 	int getRightClickDelayTimer();
+	void setLeftClickCounter(int value);
 	void clickMouse();
+	void sendClickBlockToController(bool leftClick);
 
 	void setRightClickDelayTimer(int value);
 protected:

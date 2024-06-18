@@ -31,6 +31,62 @@ KeyBinding GameSettings::getKeyBindSprint()
 	return KeyBinding(env->GetObjectField(instance, GameSettingsClass.getFieldID("keyBindSprint")), env);
 }
 
+KeyBinding GameSettings::getKeyBindForward()
+{
+	if (!instance)
+		return KeyBinding(env);
+	return KeyBinding(env->GetObjectField(instance, GameSettingsClass.getFieldID("keyBindForward")), env);
+}
+
+KeyBinding GameSettings::getKeyBindBack()
+{
+	if (!instance)
+		return KeyBinding(env);
+	return KeyBinding(env->GetObjectField(instance, GameSettingsClass.getFieldID("keyBindBack")), env);
+}
+
+KeyBinding GameSettings::getKeyBindLeft()
+{
+	if (!instance)
+		return KeyBinding(env);
+	return KeyBinding(env->GetObjectField(instance, GameSettingsClass.getFieldID("keyBindLeft")), env);
+}
+
+KeyBinding GameSettings::getKeyBindRight()
+{
+	if (!instance)
+		return KeyBinding(env);
+	return KeyBinding(env->GetObjectField(instance, GameSettingsClass.getFieldID("keyBindRight")), env);
+}
+
+KeyBinding GameSettings::getKeyBindAttack()
+{
+	if (!instance)
+		return KeyBinding(env);
+	return KeyBinding(env->GetObjectField(instance, GameSettingsClass.getFieldID("keyBindAttack")), env);
+}
+
+KeyBinding GameSettings::getKeyBindJump()
+{
+	if (!instance)
+		return KeyBinding(env);
+	return KeyBinding(env->GetObjectField(instance, GameSettingsClass.getFieldID("keyBindJump")), env);
+}
+
+bool GameSettings::getPauseOnLostFocus()
+{
+	if (!instance)
+		return false;
+	return env->GetBooleanField(instance, GameSettingsClass.getFieldID("pauseOnLostFocus")) == JNI_TRUE;
+}
+
+void GameSettings::setPauseOnLostFocus(bool value)
+{
+	if (!instance)
+		return;
+	env->SetBooleanField(instance, GameSettingsClass.getFieldID("pauseOnLostFocus"), (value ? JNI_TRUE : JNI_FALSE));
+}
+
 void GameSettings::setGammaSetting(double value)
 {
 	if (!instance)

@@ -25,6 +25,7 @@ bool Ripterms::Cache::fillCache()
 		theWorld = theMinecraft.getTheWorld();
 		playerEntities = theWorld.getPlayerEntities();
 		gameSettings = theMinecraft.getGameSettings();
+		entityRenderer = theMinecraft.getEntityRenderer();
 		timer = theMinecraft.getTimer();
 		playerController = theMinecraft.getPlayerController();
 		sendQueue = thePlayer.getSendQueue();

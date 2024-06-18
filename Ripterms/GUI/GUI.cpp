@@ -3,6 +3,8 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_opengl3.h>
 #include <ImGui/imgui_impl_win32.h>
+#include <ImGui/ImGuiNotify.hpp>
+#include <ImGui/IconsFontAwesome6.h>
 #include <Windows.h>
 #include "../Modules/Modules.h"
 #include "font.h"
@@ -11,6 +13,7 @@
 #include "gl/GL.h"
 #include "../Cache/Cache.h"
 #include "../../net/minecraft/client/renderer/ActiveRenderInfo/ActiveRenderInfo.h"
+#include "fonts/fa_solid_900.hpp"
 
 namespace
 {
@@ -134,17 +137,25 @@ static BOOL WINAPI detour_wglSwapBuffers(HDC unnamedParam1)
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		io.IniFilename = nullptr;
 		io.LogFilename = nullptr;
-
-
-		ImFontConfig CustomFont;
-		CustomFont.FontDataOwnedByAtlas = false;
-
-		io.Fonts->AddFontFromMemoryTTF((void*)Custom.data(), (int)Custom.size(), 17.5f, &CustomFont);
+		
 		io.Fonts->AddFontDefault();
-		ImGui::StyleColorsDark();
 
+		float baseFontSize = 16.0f; // Default font size
+		float iconFontSize = baseFontSize * 2.0f / 3.0f; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+
+		static const ImWchar iconsRanges[] = {ICON_MIN_FA, ICON_MAX_16_FA, 0};
+		ImFontConfig iconsConfig;
+		iconsConfig.MergeMode = true;
+		iconsConfig.PixelSnapH = true;
+		iconsConfig.GlyphMinAdvanceX = iconFontSize;
+		
+		io.Fonts->AddFontFromMemoryCompressedTTF(fa_solid_900_compressed_data, fa_solid_900_compressed_size, iconFontSize, &iconsConfig, iconsRanges);
+		
+		ImGui::StyleColorsDark();
+		
 		ImGui_ImplOpenGL3_Init();
 		ImGui_ImplWin32_Init(Ripterms::window);
+		
 		isInit = true;
 	}
 
@@ -346,6 +357,8 @@ static BOOL WINAPI detour_wglSwapBuffers(HDC unnamedParam1)
 		ClipCursor(&originalClip);
 		clipped = true;
 	}
+	
+	ImGui::RenderNotifications();
 
 	ImGui::EndFrame();
 	ImGui::Render();
