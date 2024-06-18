@@ -13,12 +13,5 @@ void Ripterms::Modules::FastPlace::run()
 
 void Ripterms::Modules::FastPlace::renderGUI()
 {
-	ImGui::Checkbox("Fast Place", &enabled);
-	if (enabled)
-	{
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 15.0f);
-		ImGui::BeginGroup();
-		ImGui::SliderInt("Tick Delay", &tickDelay, 0, 3);
-		ImGui::EndGroup();
-	}
+	ImGui::CustomSliderInt("Tick Delay", &tickDelay, 0, 3, "%", 0);
 }

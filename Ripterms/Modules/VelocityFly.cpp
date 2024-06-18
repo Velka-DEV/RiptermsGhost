@@ -2,14 +2,7 @@
 
 void Ripterms::Modules::VelocityFly::renderGUI()
 {
-	ImGui::Checkbox("VelocityFly", &enabled);
-	if (enabled)
-	{
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 15.0f);
-		ImGui::BeginGroup();
-		ImGui::SliderFloat("Speed", &speed, 0.01f, 2.0f, "%.2f");
-		ImGui::EndGroup();
-	}
+	ImGui::CustomSliderFloat("Speed", &speed, 0.01f, 2.0f, "%.2f", 0);
 }
 
 void Ripterms::Modules::VelocityFly::onUpdateWalkingPlayer(JNIEnv* env, EntityPlayerSP& this_player, bool* cancel)
