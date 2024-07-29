@@ -1,5 +1,8 @@
-#include "../Modules.h"
-#include "../../Hook/JavaHook.h"
+#include "../../Modules.h"
+
+#if ENABLE_COMBAT_MODULES
+
+#include "../../../Hook/JavaHook.h"
 
 void Ripterms::Modules::NoMiss::onClickMouse(JNIEnv* env, Minecraft& theMinecraft, bool* cancel)
 {
@@ -10,3 +13,4 @@ void Ripterms::Modules::NoMiss::onClickMouse(JNIEnv* env, Minecraft& theMinecraf
 		*cancel = true;
 	}
 }
+#endif

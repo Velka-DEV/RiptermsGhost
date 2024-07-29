@@ -1,6 +1,9 @@
-#include "../Modules.h"
-#include "../../GUI/GUI.h"
-#include "../../Cache/Cache.h"
+#include "../../Modules.h"
+
+#if ENABLE_COMBAT_MODULES
+
+#include "../../../GUI/GUI.h"
+#include "../../../Cache/Cache.h"
 #include <ImGui/imgui.h>
 
 void Ripterms::Modules::LeftClicker::run()
@@ -25,3 +28,4 @@ void Ripterms::Modules::LeftClicker::renderGUI()
 	ImGui::CustomSliderInt("Min CPS", &min_cps, 1, 150, 0, 0);
 	ImGui::CustomSliderInt("Max CPS", &max_cps, 1, 150, 0, 0);
 }
+#endif

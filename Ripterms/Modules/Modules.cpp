@@ -21,7 +21,7 @@ void Ripterms::Modules::IModule::render()
 {
 }
 
-void Ripterms::Modules::IModule::disable()
+void Ripterms::Modules::IModule::destroy()
 {
 	enabled = false;
 }
@@ -252,16 +252,18 @@ void Ripterms::Modules::cleanAll()
 	{
 		for (IModule* m : category.modules)
 		{
-			m->disable();
+			m->destroy();
 		}
 	}
 }
 
-
+#if ENABLE_RENDER_MODULES
 void Ripterms::Modules::ESP::render()
 {
 }
+#endif
 
+#if ENABLE_COMBAT_MODULES
 void Ripterms::Modules::BlockOnAttack::onAttackTargetEntityWithCurrentItem(JNIEnv* env, EntityPlayer& this_player, Entity& entity, bool* cancel)
 {
 	if (!enabled) return;
@@ -270,3 +272,4 @@ void Ripterms::Modules::BlockOnAttack::onAttackTargetEntityWithCurrentItem(JNIEn
 	PostMessageA(Ripterms::window, WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(cursorPos.x, cursorPos.y));
 	PostMessageA(Ripterms::window, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(cursorPos.x, cursorPos.y));
 }
+#endif

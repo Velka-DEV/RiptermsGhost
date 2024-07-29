@@ -1,5 +1,7 @@
-#include "../Modules.h"
-#include "../../Cache/Cache.h"
+#include "../../Modules.h"
+
+#if ENABLE_PLAYER_MODULES
+#include "../../../Cache/Cache.h"
 #include <ImGui/imgui.h>
 
 
@@ -51,3 +53,4 @@ void Ripterms::Modules::LegitScaffold::renderGUI()
 {
 	ImGui::CustomSliderInt("delay", &tickDelay, 0, 10, 0, 0);
 }
+#endif

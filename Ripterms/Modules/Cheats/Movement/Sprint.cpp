@@ -1,6 +1,8 @@
-#include "../Modules.h"
+#include "../../Modules.h"
+
+#if ENABLE_MOVEMENT_MODULES
 #include <ImGui/imgui.h>
-#include "../../Cache/Cache.h"
+#include "../../../Cache/Cache.h"
 
 void Ripterms::Modules::Sprint::run()
 {
@@ -8,3 +10,4 @@ void Ripterms::Modules::Sprint::run()
 		return;
 	cache->gameSettings.getKeyBindSprint().setPressed(true);
 }
+#endif

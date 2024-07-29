@@ -1,5 +1,8 @@
-#include "../Modules.h"
-#include "../../Cache/Cache.h"
+#include "../../Modules.h"
+
+#if ENABLE_COMBAT_MODULES
+
+#include "../../../Cache/Cache.h"
 #include "../../java/lang/String/String.h"
 #include <ImGui/imgui.h>
 
@@ -9,7 +12,7 @@ void Ripterms::Modules::Reach::renderGUI()
 	ImGui::CustomSliderFloat("Reach Distance", &reach_distance, 3.0f, 4.0f, "%.2f", 0);
 }
 
-void Ripterms::Modules::Reach::disable()
+void Ripterms::Modules::Reach::destroy()
 {
 	if (!cp_reach_addr) return;
 	if (Ripterms::p_env)
@@ -69,3 +72,4 @@ void Ripterms::Modules::Reach::onGetMouseOver(JNIEnv* env, float partialTicks, b
 	*cp_reach_addr = (double)d;
 	prev_reach_distance = d;
 }
+#endif

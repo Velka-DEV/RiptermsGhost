@@ -1,9 +1,11 @@
-#include "../Modules.h"
+#include "../../Modules.h"
+
+#if ENABLE_RENDER_MODULES
 #include <imgui.h>
-#include "../../Hook/JavaHook.h"
-#include "../../Cache/Cache.h"
+#include "../../../Hook/JavaHook.h"
+#include "../../../Cache/Cache.h"
 #include "../../net/minecraft/client/renderer/ActiveRenderInfo/ActiveRenderInfo.h"
-#include "../../GUI/GUI.h"
+#include "../../../GUI/GUI.h"
 
 void Ripterms::Modules::Xray::renderGUI()
 {
@@ -34,6 +36,7 @@ void Ripterms::Modules::Xray::render()
 	Ripterms::Maths::Vector3d cameraPos = ActiveRenderInfo::get_cached_cameraPos();
 
 	std::lock_guard lock{ renderData_mutex };
+	std::cout << renderDatas.size() << std::endl;
 	for (RenderData& renderData : renderDatas)
 	{
 		if (!renderData.render) continue;
@@ -53,7 +56,7 @@ void Ripterms::Modules::Xray::render()
 	}
 }
 
-void Ripterms::Modules::Xray::disable()
+void Ripterms::Modules::Xray::destroy()
 {
 	thread_running = false;
 	blockFinderThread.join();
@@ -154,3 +157,4 @@ Ripterms::Modules::Xray::RenderData::RenderData(const Ripterms::Maths::Vector3d&
 	else
 		render = false;
 }
+#endif

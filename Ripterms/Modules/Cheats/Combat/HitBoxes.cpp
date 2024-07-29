@@ -1,6 +1,8 @@
-#include "../Modules.h"
+#include "../../Modules.h"
+
+#if ENABLE_COMBAT_MODULES
 #include <ImGui/imgui.h>
-#include "../../Cache/Cache.h"
+#include "../../../Cache/Cache.h"
 
 void Ripterms::Modules::HitBoxes::renderGUI()
 {
@@ -40,3 +42,4 @@ void Ripterms::Modules::HitBoxes::run()
 		target_bb.setMaxY(target_bb.getMaxY() + y_expand);
 	}
 }
+#endif

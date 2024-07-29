@@ -1,4 +1,5 @@
 #include "../Modules.h"
+
 #include <ImGui/imgui.h>
 #include <iostream>
 #include "../../net/minecraft/network/Packet/Packet.h"
@@ -9,7 +10,7 @@
 #include "../../Cache/Cache.h"
 #include <gl/GL.h>
 
-
+#if ENABLE_MISC_MODULES
 static void callback(HotSpot::frame* frame, HotSpot::Thread* thread, bool* cancel)
 {
 	*cancel = true;
@@ -77,3 +78,4 @@ void Ripterms::Modules::Test::renderGUI()
 		*/
 	}
 }
+#endif

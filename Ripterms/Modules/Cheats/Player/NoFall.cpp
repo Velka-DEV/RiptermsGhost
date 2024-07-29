@@ -1,5 +1,7 @@
-#include "../Modules.h"
-#include "../../Cache/Cache.h"
+#include "../../Modules.h"
+
+#if ENABLE_PLAYER_MODULES
+#include "../../../Cache/Cache.h"
 #include "../../net/minecraft/network/play/client/C03PacketPlayer/C06PacketPlayerPosLook/C06PacketPlayerPosLook.h"
 
 
@@ -10,3 +12,4 @@ void Ripterms::Modules::NoFall::onAddToSendQueue(JNIEnv* env, NetHandlerPlayClie
 	C03PacketPlayer packetPlayer(packet);
 	packetPlayer.setOnGround(true);
 }
+#endif

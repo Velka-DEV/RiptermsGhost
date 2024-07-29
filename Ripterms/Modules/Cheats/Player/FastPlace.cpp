@@ -1,6 +1,8 @@
-#include "../Modules.h"
+#include "../../Modules.h"
+
+#if ENABLE_PLAYER_MODULES
 #include <imgui.h>
-#include "../../Cache/Cache.h"
+#include "../../../Cache/Cache.h"
 
 void Ripterms::Modules::FastPlace::run()
 {
@@ -15,3 +17,4 @@ void Ripterms::Modules::FastPlace::renderGUI()
 {
 	ImGui::CustomSliderInt("Tick Delay", &tickDelay, 0, 3, "%", 0);
 }
+#endif

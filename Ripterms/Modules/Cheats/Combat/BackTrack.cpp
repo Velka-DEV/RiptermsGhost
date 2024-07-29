@@ -1,5 +1,7 @@
-#include "../Modules.h"
-#include "../../Cache/Cache.h"
+#include "../../Modules.h"
+
+#if ENABLE_COMBAT_MODULES
+#include "../../../Cache/Cache.h"
 #include "../../net/minecraft/network/play/server/S19PacketEntityStatus/S19PacketEntityStatus.h"
 #include "../../net/minecraft/network/protocol/game/ClientboundDamageEventPacket/ClientboundDamageEventPacket.h"
 #include "../../net/minecraft/network/play/server/S14PacketEntity/S14PacketEntity.h"
@@ -112,3 +114,4 @@ void Ripterms::Modules::BackTrack::addPacket(const PacketData& data)
 	std::lock_guard lock{ packets_mutex };
 	packets.push_back(data);
 }
+#endif

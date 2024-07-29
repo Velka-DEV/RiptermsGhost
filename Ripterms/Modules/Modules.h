@@ -18,6 +18,13 @@
 #include "../../net/minecraft/client/Minecraft/Minecraft.h"
 #include "../GUI/gyro_gui/gyro_gui.h"
 
+#define ENABLE_AUTOMATION_MODULES 1
+#define ENABLE_COMBAT_MODULES 0
+#define ENABLE_PLAYER_MODULES 0
+#define ENABLE_MOVEMENT_MODULES 0
+#define ENABLE_RENDER_MODULES 1
+#define ENABLE_MISC_MODULES 1
+
 namespace Ripterms
 {
 	namespace Modules
@@ -29,7 +36,7 @@ namespace Ripterms
 			virtual void run();
 			virtual void renderGUI();
 			virtual void render();
-			virtual void disable(); // called when the cheat is uninjected
+			virtual void destroy(); // called when the cheat is uninjected
 
 			const char* get_name();
 			const char* get_description();
@@ -62,8 +69,27 @@ namespace Ripterms
 			const char* description;
 		};
 
+#if ENABLE_AUTOMATION_MODULES
+		class Waypoints : public IModule
+		{
+		public:
+			Waypoints() : IModule("Waypoints", "Manage waypoints and actions") {}
+			void run() override;
+			void renderGUI() override;
+			void render() override;
+			void destroy() override;
+		private:
+			struct Waypoint {
+				Maths::Vector3d pos;
+				std::string actions;
+			};
+			std::vector<Waypoint> waypoints;
+			void renderWaypoints();
+			void executeActions(const std::string& actions);
+		};
+#endif
 
-		// Category Combat
+#if ENABLE_COMBAT_MODULES
 		class AimAssist : public IModule
 		{
 		public:
@@ -71,7 +97,7 @@ namespace Ripterms
 			void run() override;
 			void renderGUI() override;
 			void render() override;
-			void disable() override;
+			void destroy() override;
 		private:
 			float max_distance = 6.0f;
 			float max_angle = 80.0f;
@@ -85,7 +111,7 @@ namespace Ripterms
 		public:
 			Reach() : IModule("Reach", "Allows you to hit entities further away") {}
 			void renderGUI() override;
-			void disable() override;
+			void destroy() override;
 			void onGetMouseOver(JNIEnv* env, float partialTicks, bool* cancel) override;
 		private:
 			float reach_distance = 4.0f;
@@ -125,185 +151,6 @@ namespace Ripterms
 		private:
 			float x_expand = 0.1f;
 			float y_expand = 0.1f;
-		};
-
-
-		//Category Other
-		class ClientBrandChanger : public IModule
-		{
-		public:
-			ClientBrandChanger() : IModule("Clientbrand changer", "Changes the client brand sent to the server on login") {}
-			void renderGUI() override;
-			void onGetClientModName(JNIEnv* env, bool* cancel) override;
-		private:
-			char client_name[256] = { '\0' };
-			String getClientModName();
-		};
-
-		class Test : public IModule
-		{
-		public:
-			Test() : IModule("Test") {}
-			void renderGUI() override;
-		};
-
-		//Category Player
-		class Velocity : public IModule
-		{
-		public:
-			Velocity() : IModule("Velocity", "Modifies the knockback you take when you get damaged") {}
-			void run() override;
-			void renderGUI() override;
-		private:
-			float motionX = 0.0f;
-			float motionY = 0.0f;
-			float motionZ = 0.0f;
-			int tickDelay = 1;
-		};
-
-		class FastPlace : public IModule
-		{
-		public:
-			FastPlace() : IModule("Fast place", "Allows you to place blocks faster while holding right click") {}
-			void run() override;
-			void renderGUI() override;
-		private:
-			int tickDelay = 0;
-		};
-
-		class Blink : public IModule
-		{
-		public:
-			Blink() : IModule("Blink", "Stop receiving packets from the server, process all the stopped packets once disabled") {}
-			void run() override;
-			void renderGUI() override;
-			void disable() override;
-			void onAddToSendQueue(JNIEnv* env, NetHandlerPlayClient& sendQueue, Packet& packet, bool* cancel) override;
-			void onChannelRead0(JNIEnv* env, NetworkManager& this_networkManager, ChannelHandlerContext& context, Packet& packet, bool* cancel);
-		private:
-			void sendPackets(NetHandlerPlayClient& sendQueue);
-			bool delay_sent_packets = true;
-			bool delay_received_packets = false;
-
-			std::vector<Packet> packets{};
-
-			struct PacketData
-			{
-				NetworkManager this_networkManager;
-				ChannelHandlerContext context;
-				Packet packet;
-			};
-			std::mutex rpackets_mutex{};
-			std::vector<PacketData> rpackets{};
-			void sendrPackets(JNIEnv* env);
-			void addrPacket(const PacketData& data);
-		};
-
-		class LegitScaffold : public IModule
-		{
-		public:
-			LegitScaffold() : IModule("Legit scaffold", "Auomatically sneak at the edge of blocks when you are holding the 'S' key") {}
-			void onUpdateWalkingPlayer(JNIEnv* env, EntityPlayerSP& this_player, bool* cancel) override;
-			void renderGUI() override;
-		private:
-			int tickDelay = 0;
-		};
-
-		class Sprint : public IModule
-		{
-		public:
-			Sprint() : IModule("Sprint", "Same as constantly holding your sprint key") {}
-			void run() override;
-		};
-
-		// Category Render
-		class FullBright : public IModule
-		{
-		public:
-			FullBright() : IModule("Full bright", "See in the dark") {}
-			void run() override;
-			void disable() override;
-		private:
-			double old_gamma = -1.0;
-		};
-
-		class Xray : public IModule
-		{
-		public:
-			Xray() : IModule("Xray", "See ores through blocks") {}
-			void renderGUI() override;
-			void render() override;
-			void disable() override;
-		private:
-			struct RenderData
-			{
-				RenderData(const Ripterms::Maths::Vector3d& blockPos, const std::string& blockName, Xray* xray);
-				struct Quad
-				{
-					Ripterms::Maths::Vector3d p1, p2, p3, p4;
-				} quads[6];
-				ImColor color{ 209, 100, 245, 40 };
-				bool render = true;
-			};
-
-			static void updateRenderData(Xray* xray);
-
-			int RADIUS = 20;
-			bool coal = false;
-			bool redstone = false;
-			bool diamond = true;
-			bool gold = true;
-			bool iron = true;
-			bool emerald = true;
-			bool lapis = true;
-			bool other = true;
-
-			std::vector<RenderData> renderDatas{};
-			std::mutex renderData_mutex{};
-			volatile bool thread_running = true;
-			volatile bool update_blocks = false;
-			std::thread blockFinderThread{ updateRenderData, this };
-		};
-
-		class ESP : public IModule
-		{
-		public:
-			ESP() : IModule("ESP") {}
-			void render() override;
-		};
-
-		class NoFall : public IModule
-		{
-		public:
-			NoFall() : IModule("No fall", "Don't take fall damage") {}
-			void onAddToSendQueue(JNIEnv* env, NetHandlerPlayClient& sendQueue, Packet& packet, bool* cancel) override;
-		};
-
-		class Glide : public IModule
-		{
-		public:
-			Glide() : IModule("Glide", "Fall slowly") {}
-			void onUpdateWalkingPlayer(JNIEnv* env, EntityPlayerSP& this_player, bool* cancel) override;
-		};
-
-		class VelocityFly : public IModule
-		{
-		public:
-			VelocityFly() : IModule("Velocity fly", "Modifies your velocity so you can stay in the air and fly") {}
-			void renderGUI() override;
-			void onUpdateWalkingPlayer(JNIEnv* env, EntityPlayerSP& this_player, bool* cancel) override;
-		private:
-			float speed = 0.1f;
-		};
-
-		class Speed : public IModule
-		{
-		public:
-			Speed() : IModule("Speed", "Go brrrrrrrrrrrrr") {}
-			void renderGUI() override;
-			void onUpdateWalkingPlayer(JNIEnv* env, EntityPlayerSP& this_player, bool* cancel) override;
-		private:
-			float speed = 0.1f;
 		};
 
 		class BackTrack : public IModule
@@ -348,6 +195,78 @@ namespace Ripterms
 			BlockOnAttack() : IModule("BlockOnAttack", "Right click when you attack someone") {}
 			void onAttackTargetEntityWithCurrentItem(JNIEnv* env, EntityPlayer& this_player, Entity& entity, bool* cancel) override;
 		};
+#endif
+
+#if ENABLE_PLAYER_MODULES
+		class FastPlace : public IModule
+		{
+		public:
+			FastPlace() : IModule("Fast place", "Allows you to place blocks faster while holding right click") {}
+			void run() override;
+			void renderGUI() override;
+		private:
+			int tickDelay = 0;
+		};
+
+		class Blink : public IModule
+		{
+		public:
+			Blink() : IModule("Blink", "Stop receiving packets from the server, process all the stopped packets once disabled") {}
+			void run() override;
+			void renderGUI() override;
+			void destroy() override;
+			void onAddToSendQueue(JNIEnv* env, NetHandlerPlayClient& sendQueue, Packet& packet, bool* cancel) override;
+			void onChannelRead0(JNIEnv* env, NetworkManager& this_networkManager, ChannelHandlerContext& context, Packet& packet, bool* cancel);
+		private:
+			void sendPackets(NetHandlerPlayClient& sendQueue);
+			bool delay_sent_packets = true;
+			bool delay_received_packets = false;
+
+			std::vector<Packet> packets{};
+
+			struct PacketData
+			{
+				NetworkManager this_networkManager;
+				ChannelHandlerContext context;
+				Packet packet;
+			};
+			std::mutex rpackets_mutex{};
+			std::vector<PacketData> rpackets{};
+			void sendrPackets(JNIEnv* env);
+			void addrPacket(const PacketData& data);
+		};
+
+		class LegitScaffold : public IModule
+		{
+		public:
+			LegitScaffold() : IModule("Legit scaffold", "Auomatically sneak at the edge of blocks when you are holding the 'S' key") {}
+			void onUpdateWalkingPlayer(JNIEnv* env, EntityPlayerSP& this_player, bool* cancel) override;
+			void renderGUI() override;
+		private:
+			int tickDelay = 0;
+		};
+		
+		class NoFall : public IModule
+		{
+		public:
+			NoFall() : IModule("No fall", "Don't take fall damage") {}
+			void onAddToSendQueue(JNIEnv* env, NetHandlerPlayClient& sendQueue, Packet& packet, bool* cancel) override;
+		};
+#endif
+
+#if ENABLE_MOVEMENT_MODULES
+		class Velocity : public IModule
+		{
+		public:
+			Velocity() : IModule("Velocity", "Modifies the knockback you take when you get damaged") {}
+			void run() override;
+			void renderGUI() override;
+		private:
+			float motionX = 0.0f;
+			float motionY = 0.0f;
+			float motionZ = 0.0f;
+			int tickDelay = 1;
+		};
 
 		class VelocityPacket : public IModule
 		{
@@ -361,7 +280,119 @@ namespace Ripterms
 			float motionZ_multiplier = 0.0f;
 		};
 
+		class Sprint : public IModule
+		{
+		public:
+			Sprint() : IModule("Sprint", "Same as constantly holding your sprint key") {}
+			void run() override;
+		};
 
+		class Glide : public IModule
+		{
+		public:
+			Glide() : IModule("Glide", "Fall slowly") {}
+			void onUpdateWalkingPlayer(JNIEnv* env, EntityPlayerSP& this_player, bool* cancel) override;
+		};
+
+		class VelocityFly : public IModule
+		{
+		public:
+			VelocityFly() : IModule("Velocity fly", "Modifies your velocity so you can stay in the air and fly") {}
+			void renderGUI() override;
+			void onUpdateWalkingPlayer(JNIEnv* env, EntityPlayerSP& this_player, bool* cancel) override;
+		private:
+			float speed = 0.1f;
+		};
+
+		class Speed : public IModule
+		{
+		public:
+			Speed() : IModule("Speed", "Go brrrrrrrrrrrrr") {}
+			void renderGUI() override;
+			void onUpdateWalkingPlayer(JNIEnv* env, EntityPlayerSP& this_player, bool* cancel) override;
+		private:
+			float speed = 0.1f;
+		};
+#endif
+
+#if ENABLE_RENDER_MODULES
+		class FullBright : public IModule
+		{
+		public:
+			FullBright() : IModule("Full bright", "See in the dark") {}
+			void run() override;
+			void destroy() override;
+		private:
+			double old_gamma = -1.0;
+		};
+
+		class Xray : public IModule
+		{
+		public:
+			Xray() : IModule("Xray", "See ores through blocks") {}
+			void renderGUI() override;
+			void render() override;
+			void destroy() override;
+		private:
+			struct RenderData
+			{
+				RenderData(const Ripterms::Maths::Vector3d& blockPos, const std::string& blockName, Xray* xray);
+				struct Quad
+				{
+					Ripterms::Maths::Vector3d p1, p2, p3, p4;
+				} quads[6];
+				ImColor color{ 209, 100, 245, 40 };
+				bool render = true;
+			};
+
+			static void updateRenderData(Xray* xray);
+
+			int RADIUS = 20;
+			bool coal = false;
+			bool redstone = false;
+			bool diamond = true;
+			bool gold = true;
+			bool iron = true;
+			bool emerald = true;
+			bool lapis = true;
+			bool other = true;
+
+			std::vector<RenderData> renderDatas{};
+			std::mutex renderData_mutex{};
+			volatile bool thread_running = true;
+			volatile bool update_blocks = false;
+			std::thread blockFinderThread{ updateRenderData, this };
+		};
+
+		class ESP : public IModule
+		{
+		public:
+			ESP() : IModule("ESP") {}
+			void render() override;
+		};
+#endif
+
+#if ENABLE_MISC_MODULES
+		//Category Other
+		class ClientBrandChanger : public IModule
+		{
+		public:
+			ClientBrandChanger() : IModule("Clientbrand changer", "Changes the client brand sent to the server on login") {}
+			void renderGUI() override;
+			void onGetClientModName(JNIEnv* env, bool* cancel) override;
+		private:
+			char client_name[256] = { '\0' };
+			String getClientModName();
+		};
+
+		class Test : public IModule
+		{
+		public:
+			Test() : IModule("Test") {}
+			void renderGUI() override;
+		};
+#endif
+		
 		class Category
 		{
 		public:
@@ -385,11 +416,24 @@ namespace Ripterms
 
 		inline Category categories[] =
 		{
+#if ENABLE_AUTOMATION_MODULES
+			Category::create<Waypoints>("Automation"),
+#endif
+#if ENABLE_COMBAT_MODULES
 			Category::create<AimAssist, Reach, LeftClicker, WTap, HitBoxes, BackTrack, NoMiss, BlockOnAttack>("Combat"),
+#endif
+#if ENABLE_PLAYER_MODULES
 			Category::create<FastPlace, Blink, LegitScaffold, NoFall>("Player"),
+#endif
+#if ENABLE_MOVEMENT_MODULES
 			Category::create<Velocity, VelocityPacket, Sprint, Glide, VelocityFly, Speed>("Movement"),
+#endif
+#if ENABLE_RENDER_MODULES
 			Category::create<Xray, FullBright, ESP>("Render"),
+#endif
+#if ENABLE_MISC_MODULES
 			Category::create<ClientBrandChanger, Test>("Misc")
+#endif
 		};
 
 		void setupEventHooks();

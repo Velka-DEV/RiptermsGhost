@@ -54,6 +54,8 @@ namespace Ripterms
 
 			bool is_valid() const;
 			std::string to_string() const;
+
+			double** get_data() const;
 		private:
 			int line_number;
 			int column_number;

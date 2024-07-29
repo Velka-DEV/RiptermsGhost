@@ -1,4 +1,6 @@
-#include "../Modules.h"
+#include "../../Modules.h"
+
+#if ENABLE_MOVEMENT_MODULES
 #include "../../net/minecraft/network/play/server/S12PacketEntityVelocity/S12PacketEntityVelocity.h"
 
 void Ripterms::Modules::VelocityPacket::renderGUI()
@@ -20,3 +22,4 @@ void Ripterms::Modules::VelocityPacket::onChannelRead0(JNIEnv* env, NetworkManag
 	velocityPacket.setMotionY(int(velocityPacket.getMotionY() * motionY_multiplier));
 	velocityPacket.setMotionZ(int(velocityPacket.getMotionZ() * motionZ_multiplier));
 }
+#endif

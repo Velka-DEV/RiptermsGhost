@@ -1,5 +1,7 @@
-#include "../Modules.h"
-#include "../../Cache/Cache.h"
+#include "../../Modules.h"
+
+#if ENABLE_MOVEMENT_MODULES
+#include "../../../Cache/Cache.h"
 #include <ImGui/imgui.h>
 
 void Ripterms::Modules::Velocity::run()
@@ -21,3 +23,4 @@ void Ripterms::Modules::Velocity::renderGUI()
 	ImGui::CustomSliderFloat("Motion Z", &motionZ, -2.0f, 2.0f, "%.1f", 0);
 	ImGui::CustomSliderInt("Tick Delay", &tickDelay, 0, 20, 0, 0);
 }
+#endif

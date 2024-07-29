@@ -3,6 +3,7 @@
 #include <ImGui/imgui.h>
 #include "../../Hook/JavaHook.h"
 
+#if ENABLE_MISC_MODULES
 void Ripterms::Modules::ClientBrandChanger::renderGUI()
 {
 	static bool runonce = true;
@@ -32,3 +33,4 @@ String Ripterms::Modules::ClientBrandChanger::getClientModName()
 	Ripterms::JavaClassV2 ClientBrandRetrieverClass("net/minecraft/client/ClientBrandRetriever");
 	return Ripterms::p_env->CallStaticObjectMethod(ClientBrandRetrieverClass.get_jclass(), ClientBrandRetrieverClass.getMethodID("getClientModName"));
 }
+#endif

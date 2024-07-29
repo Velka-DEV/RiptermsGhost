@@ -49,6 +49,8 @@ double Ripterms::Maths::cropAngle360(double angle)
 
 double Ripterms::Maths::worldToScreen(Vector3d world_pos, Matrix modelView, Matrix projection, int screenWidth, int screenHeight, Vector2d& screen_pos)
 {
+	
+	
 	Matrix world_matrix =
 	{
 		{world_pos.x, world_pos.y, world_pos.z, 1.0}
@@ -258,6 +260,11 @@ std::string Ripterms::Maths::Matrix::to_string() const
 		result += '\n';
 	}
 	return result;
+}
+
+double** Ripterms::Maths::Matrix::get_data() const
+{
+	return data;
 }
 
 void Ripterms::Maths::Matrix::destroy_data()

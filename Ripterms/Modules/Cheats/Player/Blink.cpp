@@ -1,7 +1,9 @@
-#include "../Modules.h"
-#include "../../Cache/Cache.h"
+#include "../../Modules.h"
+
+#if ENABLE_PLAYER_MODULES
+#include "../../../Cache/Cache.h"
 #include <ImGui/imgui.h>
-#include "../../Hook/JavaHook.h"
+#include "../../../Hook/JavaHook.h"
 
 void Ripterms::Modules::Blink::run()
 {
@@ -13,7 +15,7 @@ void Ripterms::Modules::Blink::renderGUI()
 	ImGui::IOSToggle("delay received", &delay_received_packets);
 }
 
-void Ripterms::Modules::Blink::disable()
+void Ripterms::Modules::Blink::destroy()
 {
 	if (!Ripterms::p_env || !Ripterms::cache || !Ripterms::cache->is_valid) return;
 	sendPackets(Ripterms::cache->sendQueue);
@@ -72,3 +74,4 @@ void Ripterms::Modules::Blink::addrPacket(const PacketData& data)
 	std::lock_guard lock{ rpackets_mutex };
 	rpackets.push_back(data);
 }
+#endif

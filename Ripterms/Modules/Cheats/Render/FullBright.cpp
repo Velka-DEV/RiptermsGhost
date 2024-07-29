@@ -1,12 +1,14 @@
-#include "../Modules.h"
-#include "../../Cache/Cache.h"
+#include "../../Modules.h"
+
+#if ENABLE_RENDER_MODULES
+#include "../../../Cache/Cache.h"
 #include <ImGui/imgui.h>
 
 void Ripterms::Modules::FullBright::run()
 {
 	if (!enabled)
 	{
-		disable();
+		destroy();
 		return;
 	}
 	double gamma = Ripterms::cache->gameSettings.getGammaSetting();
@@ -17,7 +19,7 @@ void Ripterms::Modules::FullBright::run()
 	}
 }
 
-void Ripterms::Modules::FullBright::disable()
+void Ripterms::Modules::FullBright::destroy()
 {
 	if (!Ripterms::p_env) return;
 	if (old_gamma >= 0.0)
@@ -26,3 +28,4 @@ void Ripterms::Modules::FullBright::disable()
 		old_gamma = -1.0;
 	}
 }
+#endif

@@ -1,8 +1,9 @@
-#include "../Modules.h"
-#include "../../GUI/GUI.h"
-#include "../../Cache/Cache.h"
-#include <ImGui/imgui.h>
+#include "../../Modules.h"
 
+#if ENABLE_COMBAT_MODULES
+#include "../../../GUI/GUI.h"
+#include "../../../Cache/Cache.h"
+#include <ImGui/imgui.h>
 
 void Ripterms::Modules::AimAssist::run()
 {
@@ -178,7 +179,9 @@ void Ripterms::Modules::AimAssist::render()
 {
 }
 
-void Ripterms::Modules::AimAssist::disable()
+void Ripterms::Modules::AimAssist::destroy()
 {
 	prev_selected_target.clear();
 }
+#endif
+

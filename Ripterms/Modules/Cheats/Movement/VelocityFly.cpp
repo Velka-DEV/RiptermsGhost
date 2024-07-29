@@ -1,5 +1,6 @@
-#include "../Modules.h"
+#include "../../Modules.h"
 
+#if ENABLE_MOVEMENT_MODULES
 void Ripterms::Modules::VelocityFly::renderGUI()
 {
 	ImGui::CustomSliderFloat("Speed", &speed, 0.01f, 2.0f, "%.2f", 0);
@@ -25,3 +26,4 @@ void Ripterms::Modules::VelocityFly::onUpdateWalkingPlayer(JNIEnv* env, EntityPl
 	if (!this_player.isOnGround())
 		this_player.setMotion(motion);
 }
+#endif

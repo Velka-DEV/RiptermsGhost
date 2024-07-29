@@ -1,4 +1,7 @@
-#include "../Modules.h"
+#include "../../Modules.h"
+
+#if ENABLE_COMBAT_MODULES
+
 #include "../../net/minecraft/client/Minecraft/Minecraft.h"
 #include <imgui.h>
 
@@ -22,3 +25,4 @@ void Ripterms::Modules::WTap::onAttackTargetEntityWithCurrentItem(JNIEnv* env, E
 	if (!enabled) return;
 	ticks = 0;
 }
+#endif
