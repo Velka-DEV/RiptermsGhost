@@ -1,6 +1,9 @@
 ﻿# RiptermsGhost
 
-Inactive, random crash on some versions, needs a full recode
+Inactive, random crash on some versions, needs a full recode.
+
+### ⚠️ Many people are selling this cheat with insignificant modifications, and pretend to be me
+> I communicate only through my discord: lefraudeur
 
 An example injectable cheat for minecraft using java native interface, jvmti, java method hooking, and constant pool editing.
 
@@ -51,7 +54,6 @@ Change mappings to add new versions
 Insert to open the gui / end key to self destruct
 
 <!-- ![image](https://github.com/Lefraudeur/RiptermsGhost/assets/91006387/9957d440-6bee-4f18-b1bd-5c90fd535bd8) -->
-![image](https://api.stargaze.cloud/file/uploads/Ripterms_New_UI_By_tor.png)
 
 
 ### ⚓Event system (hook, modifiy parameters, cancel, modify return value):
@@ -66,6 +68,9 @@ You can also take a look at RiptermsInjector: https://github.com/Lefraudeur/Ript
 
 Help would be appreciated, this repo is here to share your knowledge with other people. You can also make suggestions. (open an issue or a pull request to dev branch)
 ##### ⚠dev branch contains untested features that usually work only on lunar 1.8.9
+
+### Does this come with a pre-made bypass?
+Short answer is no. This is made to be a proof on concept.
 
 📃TODO: 
 - Good world to screen, to make player and block ESP (missing w2s for 1.16.5)
